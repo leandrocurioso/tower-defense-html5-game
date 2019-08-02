@@ -1,15 +1,18 @@
 import "phaser";
-import { MainScene } from "../scene/main.scene";
 
 export default {
-    width: 360,
-    height: 640,
+    width: 640,
+    height: 512,
     type: Phaser.AUTO,
     title: "Tower Defense",
     parent: "game",
-    scene: [
-      MainScene
-    ],
     pixelArt: false,
-    backgroundColor: "#000000"
+    backgroundColor: "#000000",
+    pixelArt: true,
+    roundPixels: true,
+    physics: {
+        default: 'arcade',
+        debug: true,
+        gravity: { y: 0 }
+    }
 };;
