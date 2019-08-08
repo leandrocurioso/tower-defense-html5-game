@@ -1,4 +1,5 @@
 import 'phaser';
+import LevelConfig from '../game/level-config';
 
 export class EnemyGameObject extends Phaser.GameObjects.Image {
 
@@ -7,14 +8,18 @@ export class EnemyGameObject extends Phaser.GameObjects.Image {
         this.scene = scene;
         this.path = path;
         this.hp = 0;
-        this.enemySpped = 0;
+        this.enemySpeed = 0;
         this.follower = { t: 0, vec: new Phaser.Math.Vector2() }
         this.scene.add.existing(this);
     }
 
     update(time, delta) {
-        this.follower.x += this.enemySpped * delta;
+        this.follower.t += this.enemySpeed * delta;
         this.path.getPoint(this.follower.t, this.follower.vec);
+
+        if (this.follower.vec.y > this.y && this.follower.vec.y !== this.y) this.angle = 0;
+        if (this.follower.vec.x > this.x && this.follower.vec.x !== this.x) this.angle = -90;
+
         this.setPosition(this.follower.vec.x, this.follower.vec.y);
 
         if (this.follower.t >= 1) {
@@ -24,8 +29,8 @@ export class EnemyGameObject extends Phaser.GameObjects.Image {
     }
 
     startOnPath() {
-        this.hp = 100;
-        this.enemySpped = 1 / 10000;
+        this.hp = LevelConfig.inital.enemyHealth + LevelConfig.incremental.enemyHealth;
+        this.enemySpeed = LevelConfig.inital.enemySpeed * LevelConfig.incremental.enemySpeed;
         this.follower.t = 0;
         this.path.getPoint(this.follower.t, this.follower.vec);
         this.setPosition(this.follower.vec.x, this.follower.vec.y);
